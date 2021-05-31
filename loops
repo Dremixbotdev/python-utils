@@ -7,7 +7,7 @@ Example:
 
 # Python 3+
 
-from loop.py import Loop
+from loop import Loop
 
 loop = Loop(allowed_errors=[])
 
@@ -47,7 +47,7 @@ class Task:
         self._allowed_errors = allowed_errors
         self.func = func
 
-    def status(self) -> dict:
+    def status(self):
         return {'iterations': self._iterations, 'errors': self._errors}
 
     def execute(self, *args, **kwargs):
@@ -57,14 +57,15 @@ class Task:
             if not type(e) in self._allowed_errors:
                 print(f'Uncaught exception {type(e)} occurred: {e}')
             else:
+                logging.warn(f'Ignoring exception {type(e)}: {e}')
                 self._errors += 1
 
 
 class Loop:
-    def __init__(self, *args, allowed_errors: list = None, func: typing.Union[bool, callable] = True, **kwargs):
-        if func and (callable(func)):
-            self._can_run = func(*args, **kwargs)
-        elif func:
+    def __init__(self, *args, allowed_errors: list = None, start: typing.Union[bool, callable] = True, **kwargs):
+        if start and (callable(start)):
+            self._can_run = start(*args, **kwargs)
+        elif start:
             self._can_run = True
         else:
             self._can_run = False
