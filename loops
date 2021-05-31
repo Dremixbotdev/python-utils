@@ -7,7 +7,7 @@ Example:
 
 # Python 3+
 
-from loop.py import Loop
+from loop import Loop
 
 loop = Loop(allowed_errors=[])
 
